@@ -1,0 +1,288 @@
+\documentclass[12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+%\usepackage[14pt]{extsizes}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools} 
+\usepackage{pgfplots}
+\usepackage{filecontents}
+\usepackage{float}
+\usepackage{comment}
+\usepackage{indentfirst}
+\usepackage{eucal}
+\usepackage{enumitem}
+%s\documentclass[openany]{book}
+\frenchspacing
+
+\usepackage{indentfirst} % Красная строка
+
+\usetikzlibrary{datavisualization}
+\usetikzlibrary{datavisualization.formats.functions}
+
+\usepackage{amsmath}
+
+
+% Для листинга кода:
+\lstset{ %
+	language=c,                 % выбор языка для подсветки (здесь это С)
+	basicstyle=\small\sffamily, % размер и начертание шрифта для подсветки кода
+	numbers=left,               % где поставить нумерацию строк (слева\справа)
+	numberstyle=\tiny,           % размер шрифта для номеров строк
+	stepnumber=1,                   % размер шага между двумя номерами строк
+	numbersep=5pt,                % как далеко отстоят номера строк от подсвечиваемого кода
+	showspaces=false,            % показывать или нет пробелы специальными отступами
+	showstringspaces=false,      % показывать или нет пробелы в строках
+	showtabs=false,             % показывать или нет табуляцию в строках
+	frame=single,              % рисовать рамку вокруг кода
+	tabsize=2,                 % размер табуляции по умолчанию равен 2 пробелам
+	captionpos=t,              % позиция заголовка вверху [t] или внизу [b] 
+	breaklines=true,           % автоматически переносить строки (да\нет)
+	breakatwhitespace=false, % переносить строки только если есть пробел
+	escapeinside={\#*}{*)}   % если нужно добавить комментарии в коде
+}
+
+
+\usepackage[left=2cm,right=2cm, top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+% Для измененных титулов глав:
+\usepackage{titlesec, blindtext, color} % подключаем нужные пакеты
+\definecolor{gray75}{gray}{0.75} % определяем цвет
+\newcommand{\hsp}{\hspace{20pt}} % длина линии в 20pt
+% titleformat определяет стиль
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+
+
+% plot
+\usepackage{pgfplots}
+\usepackage{filecontents}
+\usetikzlibrary{datavisualization}
+\usetikzlibrary{datavisualization.formats.functions}
+
+\begin{document}
+	%\def\chaptername{} % убирает "Глава"
+	\thispagestyle{empty}
+	\begin{titlepage}
+		\noindent \begin{minipage}{0.15\textwidth}
+			\includegraphics[width=\linewidth]{img/b_logo}
+		\end{minipage}
+		\noindent\begin{minipage}{0.9\textwidth}\centering
+			\textbf{Министерство науки и высшего образования Российской Федерации}\\
+			\textbf{Федеральное государственное бюджетное образовательное учреждение высшего образования}\\
+			\textbf{~~~«Московский государственный технический университет имени Н.Э.~Баумана}\\
+			\textbf{(национальный исследовательский университет)»}\\
+			\textbf{(МГТУ им. Н.Э.~Баумана)}
+		\end{minipage}
+		
+		\noindent\rule{18cm}{3pt}
+		\newline\newline
+		\noindent ФАКУЛЬТЕТ $\underline{\text{«Информатика и системы управления»}}$ \newline\newline
+		\noindent КАФЕДРА $\underline{\text{«Программное обеспечение ЭВМ и информационные технологии»}}$\newline\newline\newline\newline\newline
+		
+		\begin{center}
+			\noindent\begin{minipage}{1.1\textwidth}\centering
+				\Large\textbf{  Отчет по лабораторной работе №7}\newline
+				\textbf{по дисциплине <<Компьютерные сети>>}\newline\newline\newline
+			\end{minipage}
+		\end{center}
+		
+		\noindent\textbf{Тема} $\underline{\text{Изучение статической маршрутизации для сетей с поддержкой IPv4 и IPv6}}$\newline\newline
+		\noindent\textbf{Студент} $\underline{\text{Романов А.В.~~~~~~~~~~~}}$\newline\newline
+		\noindent\textbf{Группа} $\underline{\text{ИУ7-73Б~~~~~~~~~~~~~~~~~~~}}$\newline\newline
+		\noindent\textbf{Преподаватель} $\underline{\text{Рогозин Н. О.}}$\newline\newline\newline
+		
+		\begin{center}
+			\vfill
+			Москва~---~\the\year
+			~г.
+		\end{center}
+	\end{titlepage}
+
+
+\section*{Задание}
+
+\textbf{Вариант №12.}\\
+
+Необходимо:
+
+\begin{itemize}	
+	\item разделить сеть на подсети в соответствии с системой адресации IPV4. Выделить достаточно адресов для размещения $x$ + 20 хостов в подсетях 1 и 2, $x$ + 10 в подсети 3, по 2 адреса интерфейса на соединения <<точка-точка>> между маршрутизаторами, где $x$ - ваш номер по списку В ЭУ;
+	\item настроить статическую маршрутизацию так, чтобы пинг любым хостом ил
+и маршрутизатором любого другого хоста или маршрутизатора был успешным;
+	\item выделить маршрутизаторам IPv6 адреса формата 2001:$x$+$y$::$z$/64, где $x$ - ваш номер по списку в ЭУ, $y$ - порядковый номер подсети, $z$ - порядковый номер интерфейса;
+	\item установить автоконфигурирование IPv6 без отслежвания состояния (SLAAC) для интерфейсов хостов в подсетях 1 и 2. В подсети 3 использовать SLAAC + DHCPv6;
+	\item настроить статическую маршрутизацию так, чтобы пинг любым хостом или маршрутизатором любого другого хоста или маршрутизатора с использованием IPv6 адреса был успешным.
+\end{itemize}
+
+\section*{Результаты работы}
+
+\subsection*{Разделение IP-адресов на подсети}
+
+В таблице 1 представлено разделение IP-адресов на подсети.
+
+\begin{table}[H]
+	\centering
+	\label{tab:networks}
+	\begin{tabular}{|p{1.5cm}|p{3cm}|p{3cm}|p{3.5cm}|p{3.2cm}|}
+		\hline
+		Номер подсети & Количество хостов & ip подсети & Диапазон адресов & Маска подсети \\
+		\hline
+		1 & 62 & 192.168.12.0 & 192.168.12.0-192.168.12.63 & 255.255.255.192 \\
+		\hline
+		2 & 62 & 192.168.12.64 & 192.168.12.64-192.168.12.127 & 255.255.255.192 \\
+		\hline
+		3 & 30 & 192.168.12.128 & 192.168.12.128-192.168.12.159 & 255.255.255.224  \\
+		\hline
+		4 & 2 & 192.168.12.160 & 192.168.12.160-192.168.12.163 & 255.255.255.252  \\
+		\hline
+		5 & 2 & 192.168.12.164 & 192.168.12.164-192.168.12.167 & 255.255.255.252  \\
+		\hline
+		6 & 2 & 192.168.12.168 & 192.168.12.33-192.168.12.171 & 255.255.255.252  \\
+		\hline
+	\end{tabular}
+	\caption{Разделение на подсети}
+\end{table}
+
+\section*{Рабочая схема}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.6]{img/1.png}
+	\end{center}
+	\caption{Схема с настроенными подсетями}
+	\label{fig:1}
+\end{figure}
+
+\subsection*{Разделение сети на подсети в соответсвии с системой адресации IPv4}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.75]{img/2.png}
+	\end{center}
+	\caption{Настройка DHCP сервера для подсети 1}
+	\label{fig:2}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.4]{img/4.png}
+	\end{center}
+	\caption{Настройка DHCP сервера для подсети 3}
+	\label{fig:3}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.4]{img/3.png}
+	\end{center}
+	\caption{Настройка статических адресов для подсети 5}
+	\label{fig:4}
+\end{figure}
+
+\subsection*{Настройка статической маршрутизации}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.75]{img/5.png}
+	\end{center}
+	\caption{Настройка маршрутов на маршрутизаторе}
+	\label{fig:5}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.75]{img/6.png}
+	\end{center}
+	\caption{Настройка маршрутов на маршрутизаторе}
+	\label{fig:6}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.75]{img/7.png}
+	\end{center}
+	\caption{Настройка маршрутов на маршрутизаторе}
+	\label{fig:7}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.75]{img/8.png}
+	\end{center}
+	\caption{Настройка маршрутов на маршрутизаторе}
+	\label{fig:8}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.75]{img/9.png}
+	\end{center}
+	\caption{Команда \texttt{ping} проходит через все маршрутизаторы (из подсети 2 в подсеть 3)}
+	\label{fig:9}
+\end{figure}
+
+\subsection*{Выделение маршрутизаторам IPv6 адреса формата 2001:x+y::z/64}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.8]{img/10.png}
+	\end{center}
+	\caption{Установка IPv6 адреса для маршрутизатора}
+	\label{fig:10}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.8]{img/11.png}
+	\end{center}
+	\caption{Установка IPv6 адреса для маршрутизатора}
+	\label{fig:11}
+\end{figure}
+
+\subsection*{Установка автоконфигурирования IPv6 без отслеживания состояния}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.8]{img/12.png}
+	\end{center}
+	\caption{Включено автоконфигурирование IPv6}
+	\label{fig:12}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.4]{img/13.png}
+	\end{center}
+	\caption{Для подсети 3 настроен DHCPv6 сервер}
+	\label{fig:13}
+\end{figure}
+
+\subsection*{Настройка статической маршрутизации (IPv6)}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.8]{img/14.png}
+	\end{center}
+	\caption{Настройка маршрутов IPv6 на маршрутизаторах}
+	\label{fig:14}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.8]{img/15.png}
+	\end{center}
+	\caption{Настройка маршрутов IPv6 на маршрутизаторах}
+	\label{fig:15}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.8]{img/16.png}
+	\end{center}
+	\caption{Команда \texttt{ping} проходит через все маршрутизаторы (из подсети 2 в подсеть 3)}
+	\label{fig:16}
+\end{figure}
+
+\bibliographystyle{utf8gost705u}
+\bibliography{51-biblio}
+	
+\end{document}
