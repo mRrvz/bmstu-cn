@@ -37,7 +37,7 @@ std::string get_extention(std::string filename)
 void log(std::string user, std::string ext)
 {
     std::ofstream fout("statistics.txt", std::ios::app);
-    fout << "User \"" + user + "\" requested ." + ext + " file\n";
+    fout << "Client \"" + user + "\" requested file with ." + ext + " extension\n";
 }
 
 int handle_request(char *msg, int client_id)

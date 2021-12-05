@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
+#include <sys/stat.h>
 #include <arpa/inet.h>
 
 #include "settings.h"
@@ -22,7 +23,7 @@ int get_file_from_server(int sock, char fname[])
     {
         get_bytes = recv(sock, buf, BUF_SIZE, 0);
 
-        #ifndef DEBUG
+        #ifdef DEBUG
         printf("Get bytes: %d | %d %c | %d %c\n",
             get_bytes, buf[get_bytes - 1], buf[get_bytes - 1], buf[get_bytes - 2], buf[get_bytes - 2]);
         #endif
@@ -36,6 +37,7 @@ int get_file_from_server(int sock, char fname[])
     }
 
     fclose(f);
+    chmod(fname, 0777);
     return OK;
 }
 
